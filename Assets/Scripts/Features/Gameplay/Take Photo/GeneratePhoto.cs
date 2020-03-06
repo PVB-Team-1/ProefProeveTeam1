@@ -11,7 +11,7 @@ public class GeneratePhoto : MonoBehaviour
     [SerializeField] private RenderTexture _renderTexture;
 
     void Start() {
-        //PhotoCameraApi.OnCreatePhoto += GenerateNewPhoto;
+        PhotoCameraApi.OnCreatePhoto += GenerateNewPhoto;
     }
 
     /// <summary>
