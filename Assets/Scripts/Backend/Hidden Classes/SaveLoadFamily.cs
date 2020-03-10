@@ -8,7 +8,7 @@ internal static class SaveLoadFamily
     static SaveLoadFamily()
     {
 		// Save Family
-        SaveLoadApi.OnGameSave += ()=>
+        SaveLoadApi.OnGameSave += () =>
 		{
 			string jsonString = JsonUtility.ToJson(Properties.family);
 			File.WriteAllText(Application.persistentDataPath + "/" + _saveFileName, jsonString);

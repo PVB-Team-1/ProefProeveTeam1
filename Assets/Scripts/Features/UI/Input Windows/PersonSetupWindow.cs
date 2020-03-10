@@ -13,6 +13,8 @@ public class PersonSetupWindow : InputSetupWindow
 
 		Properties.family.persons.Add(new Person(inputText.text));
 
+		SaveLoadApi.SaveGame();
+
 		UIApi.CloseLastWindow();
 	}
 }
