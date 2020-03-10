@@ -13,7 +13,7 @@ public class Stopwatch : MonoBehaviour
     private bool _startStopwatch = false;
 
     // This is the text object on which the timer is displayed.
-    [SerializeField] private TextMeshProUGUI _stopwatchTimer;
+    [SerializeField] private TextMeshProUGUI _stopwatchTimer = null;
 
     private void Update()
     {

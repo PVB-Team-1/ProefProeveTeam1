@@ -7,24 +7,15 @@ public static class UIApi
 
     public static event GameObjectEvent OnWindowOpen;
 
-    public static event GameObjectEvent OnWindowClose;
-
     public static event GameObjectEvent OnCloseLastWindow;
-
+    
     public static event GameObjectListEvent OnCloseAllWindows;
-
 
     public static List<GameObject> OpenedWindows = new List<GameObject>();
 
-    public static void OpenWindow(int window)
+    public static void OpenWindow(WindowTypes window)
     {
-        OnWindowOpen?.Invoke(Properties.windows[window]);
-        OpenedWindows.Add(Properties.windows[window]);
-    }
-
-    public static void CloseWindow(int window)
-    {
-        OnWindowClose?.Invoke(Properties.windows[window]);
+        OnWindowOpen?.Invoke(Properties.windows[(int)window]);
     }
 
     public static void CloseLastWindow()
