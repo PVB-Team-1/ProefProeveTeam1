@@ -13,6 +13,8 @@ public class FamilySetupWindow : InputSetupWindow
 
 		Properties.family = new Family(inputText.text);
 
+		SaveLoadApi.SaveGame();
+
 		UIApi.CloseLastWindow();
 	}
 }

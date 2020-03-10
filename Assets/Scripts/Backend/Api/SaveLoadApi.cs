@@ -14,11 +14,6 @@ public static class SaveLoadApi
 	public static event SimpleEvent OnGameLoad;
 
 	/// <summary>
-	/// The filename of the save file.
-	/// </summary>
-	public const string SaveFileName = "SaveGame.json";
-
-	/// <summary>
 	/// Saves everything about the game.
 	/// </summary>
 	public static void SaveGame()
