@@ -26,6 +26,7 @@ internal static class OpenCloseWindow
     private static void CloseLastWindow(GameObject window)
     {
         Object.Destroy(window);
+		UIApi.OpenedWindows.RemoveAt(UIApi.OpenedWindows.Count - 1);
     }
 
     private static void CloseAllWindows(List<GameObject> windows)
@@ -34,5 +35,7 @@ internal static class OpenCloseWindow
         {
             Object.Destroy(windows[i]);
         }
-    }
+
+		UIApi.OpenedWindows.Clear();
+	}
 }
