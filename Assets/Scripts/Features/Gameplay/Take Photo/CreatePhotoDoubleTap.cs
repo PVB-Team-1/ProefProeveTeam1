@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// A script to tell the game to take a picture when double tapping.
@@ -8,7 +6,10 @@ using UnityEngine;
 public class CreatePhotoDoubleTap : MonoBehaviour
 {
 
-    void Update()
+    /// <summary>
+    /// Call once every frame update.
+    /// </summary>
+    private void Update()
     {
         foreach (Touch touch in Input.touches)
         {
