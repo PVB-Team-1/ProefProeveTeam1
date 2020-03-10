@@ -13,6 +13,7 @@ public class CreatePhotoDoubleTap : MonoBehaviour
             if (touch.tapCount == 2)
             {
                 PhotoCameraApi.CreatePhoto();
+
                 return;
             }
         }
