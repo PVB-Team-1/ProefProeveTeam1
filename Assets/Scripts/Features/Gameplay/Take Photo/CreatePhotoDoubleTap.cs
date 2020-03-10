@@ -6,9 +6,6 @@
 public class CreatePhotoDoubleTap : MonoBehaviour
 {
 
-    /// <summary>
-    /// Call once every frame update.
-    /// </summary>
     private void Update()
     {
         foreach (Touch touch in Input.touches)
