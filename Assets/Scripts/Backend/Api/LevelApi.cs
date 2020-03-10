@@ -22,6 +22,11 @@ public static class LevelApi
 	/// An event for when a level resumes.
 	/// </summary>
 	public static event IntEvent OnLevelResume;
+	
+	/// <summary>
+	/// The index of the current level that got started.
+	/// </summary>
+	public static int currentLevelIndex;
 
 	/// <summary>
 	/// StartLevel calls the OnLevelStart event.
@@ -33,29 +38,26 @@ public static class LevelApi
 	}
 
 	/// <summary>
-	/// EndLevel calls the OnLevelEnd event.
+	/// Ends the current level.
 	/// </summary>
-	/// <param name="level">The level index of a level that needs to be ended.</param>
-	public static void EndLevel(int level)
+	public static void EndCurrentLevel()
 	{
-		OnLevelEnd?.Invoke(level);
+		OnLevelEnd?.Invoke(currentLevelIndex);
 	}
 
 	/// <summary>
-	/// PauseLevel calls the OnLevelPause event.
+	/// Pauses the current level.
 	/// </summary>
-	/// <param name="level">The level index of a level that needs to be paused.</param>
-	public static void PauseLevel(int level)
+	public static void PauseCurrentLevel()
 	{
-		OnLevelPause?.Invoke(level);
+		OnLevelPause?.Invoke(currentLevelIndex);
 	}
 
 	/// <summary>
-	/// ResumeLevel calls the OnLevelResume event.
+	/// Resumes the current level.
 	/// </summary>
-	/// <param name="level">The level index of a level that needs to be resumed.</param>
-	public static void ResumeLevel(int level)
+	public static void ResumeCurrentLevel()
 	{
-		OnLevelResume?.Invoke(level);
+		OnLevelResume?.Invoke(currentLevelIndex);
 	}
 }
