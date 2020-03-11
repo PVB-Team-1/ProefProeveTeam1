@@ -11,9 +11,9 @@ public class CameraZooming : MonoBehaviour
 
     // Multiplier to tweak camera zoom speed.
     [SerializeField] private float _zoomSpeedModifier = 0.5f;
-    // Minimal zoom distance.
-    [SerializeField] private float _MinZoomDistance = 0.0f;
-    // Maximum zoom distance.
+
+    [SerializeField] private float _minZoomDistance = 0.0f;
+
     [SerializeField] private float _maxZoomDistance = 5.0f;
 
     private void Update()
@@ -39,8 +39,8 @@ public class CameraZooming : MonoBehaviour
                 {
                     transform.position -= new Vector3(0, 0, delta * _zoomSpeedModifier);
 
-                    if (transform.position.z < _MinZoomDistance)
-                        transform.position += new Vector3(0, 0, Mathf.Abs(transform.position.z - _MinZoomDistance));
+                    if (transform.position.z < _minZoomDistance)
+                        transform.position += new Vector3(0, 0, Mathf.Abs(transform.position.z - _minZoomDistance));
                 }
             }
             _previousDistance = currentDistance;
