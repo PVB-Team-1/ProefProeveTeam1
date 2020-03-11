@@ -1,4 +1,7 @@
-﻿public enum WindowTypes
+﻿/// <summary>
+/// All window screens in this project.
+/// </summary>
+public enum WindowTypes
 {
     LevelSelection,
     CharacterCustomization,
