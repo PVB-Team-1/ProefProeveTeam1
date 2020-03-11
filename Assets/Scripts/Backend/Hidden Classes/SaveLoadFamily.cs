@@ -3,7 +3,7 @@ using System.IO;
 
 internal static class SaveLoadFamily
 {
-	private static string _saveFileName = "FamilySave.json";
+	private const string _saveFileName = "FamilySave.json";
 
     static SaveLoadFamily()
     {
