@@ -3,6 +3,7 @@
 /// <summary>
 /// Represents a container for the Person class.
 /// </summary>
+[System.Serializable]
 public class Family
 {
 	/// <summary>

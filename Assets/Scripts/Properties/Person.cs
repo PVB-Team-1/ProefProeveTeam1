@@ -3,6 +3,7 @@
 /// <summary>
 /// This class represents a character.
 /// </summary>
+[System.Serializable]
 public class Person
 {
 	/// <summary>
