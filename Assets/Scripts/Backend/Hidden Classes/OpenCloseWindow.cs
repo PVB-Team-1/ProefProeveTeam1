@@ -13,13 +13,6 @@ internal static class OpenCloseWindow
     private static void OpenWindow(GameObject window)
     {
         GameObject windowObj = Object.Instantiate(window, window.transform.position, Quaternion.identity);
-
-        RectTransform rect = windowObj.GetComponent<RectTransform>();
-
-        rect.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
-        rect.localPosition = new Vector3(0, 0, 0);
-        rect.localScale = new Vector3(1, 1, 1);
-
         UIApi.OpenedWindows.Add(windowObj);
     }
 

@@ -6,7 +6,7 @@ public class GameWindow : MonoBehaviour
 {
     private void Awake()
     {
-        
+        transform.parent = FindObjectOfType<Canvas>().transform;
     }
 
     public void OpenPauseWindow()
