@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PauseWindow : MonoBehaviour
 {
+
+
     public void CloseWindow()
     {
         UIApi.CloseLastWindow();
+        LevelApi.ResumeCurrentLevel();
     }
 }

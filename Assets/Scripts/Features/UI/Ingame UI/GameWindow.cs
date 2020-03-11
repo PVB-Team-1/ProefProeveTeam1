@@ -12,5 +12,6 @@ public class GameWindow : MonoBehaviour
     public void OpenPauseWindow()
     {
         UIApi.OpenWindow(WindowTypes.PauseMenu);
+        LevelApi.PauseCurrentLevel();
     }
 }

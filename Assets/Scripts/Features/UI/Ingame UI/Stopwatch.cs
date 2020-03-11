@@ -10,10 +10,18 @@ public class Stopwatch : MonoBehaviour
     private float _stopwatchTime = 0;
 
     // This bool checks whether the timer has to start or not.
-    private bool _startStopwatch = false;
+    private bool _startStopwatch = true;
 
     // This is the text object on which the timer is displayed.
     [SerializeField] private TextMeshProUGUI _stopwatchTimer = null;
+
+    private void Awake()
+    {
+        LevelApi.OnLevelStart += EnableTheStopwatch;
+        LevelApi.OnLevelResume += EnableTheStopwatch;
+        LevelApi.OnLevelPause += DisableTheStopwatch;
+        LevelApi.OnLevelEnd += DisableTheStopwatch;
+    }
 
     private void Update()
     {
@@ -43,5 +51,6 @@ public class Stopwatch : MonoBehaviour
         _stopwatchTimer.text = minutes + ":" + seconds;
     }
 
-    public void EnableTheStopwatch(bool enable) { _startStopwatch = enable; }
+    private void EnableTheStopwatch(int level) { _startStopwatch = true; }
+    private void DisableTheStopwatch(int level) { _startStopwatch = false; }
 }
