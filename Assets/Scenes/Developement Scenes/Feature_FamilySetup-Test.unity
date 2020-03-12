@@ -371,7 +371,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1311317899}
-  - component: {fileID: 1311317898}
   - component: {fileID: 1311317897}
   m_Layer: 0
   m_Name: FamilySetupTest
@@ -392,27 +391,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64394b8fc8997e54b9c8ac232b16f2b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelSelection: {fileID: 0}
-  _characterCustomization: {fileID: 0}
-  _familySetup: {fileID: 9199300915495537647, guid: c02aa015a75efcf4db0eb266674f8c51,
-    type: 3}
-  _characterSetup: {fileID: 9199300915495537647, guid: 21f9a5f8f0158eb4d8d4c5e50b6d3ab6,
-    type: 3}
-  _pauseMenu: {fileID: 0}
-  _completionMenu: {fileID: 0}
-  _shopMenu: {fileID: 0}
---- !u!114 &1311317898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1311317896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dd13e42f7410dc47ac0474875a19ad7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _windows:
+  - type: 0
+    model: {fileID: 0}
+  - type: 1
+    model: {fileID: 0}
+  - type: 2
+    model: {fileID: 9199300915495537647, guid: c02aa015a75efcf4db0eb266674f8c51, type: 3}
+  - type: 3
+    model: {fileID: 9199300915495537647, guid: 21f9a5f8f0158eb4d8d4c5e50b6d3ab6, type: 3}
+  - type: 4
+    model: {fileID: 0}
+  - type: 5
+    model: {fileID: 0}
+  - type: 6
+    model: {fileID: 0}
 --- !u!4 &1311317899
 Transform:
   m_ObjectHideFlags: 0
