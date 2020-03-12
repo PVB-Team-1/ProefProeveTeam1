@@ -100,6 +100,7 @@ public class CameraDragging : MonoBehaviour
             );
         }
     }
+
     private void Update()
     {
         //Only run when there is not more than 1 input.

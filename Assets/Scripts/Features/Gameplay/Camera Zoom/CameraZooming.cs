@@ -21,6 +21,9 @@ public class CameraZooming : MonoBehaviour
 
     [SerializeField] private float _maxZoomDistance = 5.0f;
 
+    /// <summary>
+    /// Returns the zoom level of the camera.
+    /// </summary>
     public float GetZoomLevel
     {
         get
