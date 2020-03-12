@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameWindow : MonoBehaviour
 {
-    private void Awake()
-    {
-        
-    }
-
+    /// <summary>
+    /// This function opens the pause window and pauses the game
+    /// </summary>
     public void OpenPauseWindow()
     {
         UIApi.OpenWindow(WindowTypes.PauseMenu);
