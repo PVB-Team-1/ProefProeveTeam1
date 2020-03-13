@@ -6,6 +6,11 @@
 public class CameraZooming : MonoBehaviour
 {
 
+    /// <summary>
+    /// A simple event to call when the camera is zooming in or out.
+    /// </summary>
+    public SimpleEvent OnZooming;
+
     // Distance between 2 touches in the previous saved frame.
     private float _previousDistance = 0f;
 
@@ -15,6 +20,17 @@ public class CameraZooming : MonoBehaviour
     [SerializeField] private float _minZoomDistance = 0.0f;
 
     [SerializeField] private float _maxZoomDistance = 5.0f;
+
+    /// <summary>
+    /// Returns the zoom level of the camera.
+    /// </summary>
+    public float GetZoomLevel
+    {
+        get
+        {
+            return Mathf.Abs(transform.position.z - _minZoomDistance);
+        }
+    }
 
     private void Update()
     {
@@ -44,6 +60,8 @@ public class CameraZooming : MonoBehaviour
                 }
             }
             _previousDistance = currentDistance;
+
+            OnZooming?.Invoke();
 
             // As long as 2 touches are registered on the screen, _previousDistance won't reset it's value back to 0.
             return;
