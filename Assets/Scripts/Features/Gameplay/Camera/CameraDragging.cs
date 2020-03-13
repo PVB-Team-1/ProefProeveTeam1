@@ -33,11 +33,18 @@ public class CameraDragging : MonoBehaviour
     private float _zoomLevel;
 
     private bool _isDragging = false;
+    private bool _canDrag = true;
 
     private Vector3 _oldPos;
     private Vector3 _touchOrigin;
 
     private Touch touch;
+
+    private void Awake()
+    {
+        LevelApi.OnLevelResume += EnableDragging;
+        LevelApi.OnLevelPause += DisableDragging;
+    }
 
     private void Start()
     {
@@ -55,29 +62,27 @@ public class CameraDragging : MonoBehaviour
         _touchOrigin = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
     }
 
-    /*
-        Moves the object according to the dragging the finger across the screen.
-    */
+    // Moves the object according to the dragging the finger across the screen.
     private void MoveObject()
     {
-        //Get the new position of the mouse relative to the _touchOrigin
+        // Get the new position of the mouse relative to the _touchOrigin
         Vector3 newPos = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position) - _touchOrigin;
 
-        //Calculate the position of the next step, for checking if the next position is over a boundary
+        // Calculate the position of the next step, for checking if the next position is over a boundary
         float nextStepX = transform.position.x + -newPos.x * _dragSpeed;
         float nextStepY = transform.position.y + -newPos.y * _dragSpeed;
 
-        //Get zoom level for modifying boundaries.
+        // Get zoom level for modifying boundaries.
         _zoomLevel = _zooming.GetZoomLevel * _verticalBoundsModifier;
 
-        //Check if the nextSteps are outside the boundaries
+        // Check if the nextSteps are outside the boundaries
         if
         (
             nextStepX < _horizontalBoundary &&
             nextStepX > -_horizontalBoundary
         )
         {
-            //Move the object horizontally.
+            // Move the object horizontally.
             transform.position = new Vector3
             (
                 _oldPos.x + -newPos.x * _dragSpeed,
@@ -91,7 +96,7 @@ public class CameraDragging : MonoBehaviour
             nextStepY > -_verticalBoundary * _zoomLevel
         )
         {
-            //Move the object vertically.
+            // Move the object vertically.
             transform.position = new Vector3
             (
                 transform.position.x,
@@ -103,38 +108,39 @@ public class CameraDragging : MonoBehaviour
 
     private void Update()
     {
-        //Only run when there is not more than 1 input.
-        switch (Input.touchCount)
+        if (_canDrag)
         {
-            case 1:
-                if (touch.phase == TouchPhase.Began)
-                {
-                    if (!_isDragging)
+            // Only run when there is not more than 1 input.
+            switch (Input.touchCount)
+            {
+                case 1:
+                    if (touch.phase == TouchPhase.Began)
                     {
-                        SaveOriginPositions();
-                        _isDragging = true;
+                        if (!_isDragging)
+                        {
+                            SaveOriginPositions();
+                            _isDragging = true;
+                        }
+                        else
+                        {
+                            MoveObject();
+                        }
                     }
-                    else
-                    {
-                        MoveObject();
-                    }
-                }
-                break;
-            case 0:
-                _isDragging = false;
-                break;
-            default:
-                //Reset the _oldPos and _touchOrigin.
-                _oldPos = transform.position;
-                _touchOrigin = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
-                _isDragging = false;
-                break;
+                    break;
+                case 0:
+                    _isDragging = false;
+                    break;
+                default:
+                    // Reset the _oldPos and _touchOrigin.
+                    _oldPos = transform.position;
+                    _touchOrigin = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                    _isDragging = false;
+                    break;
+            }
         }
     }
 
-    /*
-        Clamp the object to the vertical bounds.
-    */
+    // Clamp the object to the vertical bounds.
     private void ClampToBounds()
     {
         // Get the zoom level of the camera.
@@ -160,4 +166,7 @@ public class CameraDragging : MonoBehaviour
     {
         _zooming.OnZooming -= ClampToBounds;
     }
+
+    private void EnableDragging(int i) { _canDrag = true; }
+    private void DisableDragging(int i) { _canDrag = false; }
 }
