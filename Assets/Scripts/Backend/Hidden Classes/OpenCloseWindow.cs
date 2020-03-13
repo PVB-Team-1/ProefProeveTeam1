@@ -16,7 +16,7 @@ internal static class OpenCloseWindow
 
         RectTransform rect = windowObj.GetComponent<RectTransform>();
 
-        rect.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
+        rect.SetParent(Object.FindObjectOfType<Canvas>().transform);
         rect.localPosition = new Vector3(0, 0, 0);
         rect.localScale = new Vector3(1, 1, 1);
 
@@ -26,7 +26,8 @@ internal static class OpenCloseWindow
     private static void CloseLastWindow(GameObject window)
     {
         Object.Destroy(window);
-    }
+		UIApi.OpenedWindows.RemoveAt(UIApi.OpenedWindows.Count - 1);
+	}
 
     private static void CloseAllWindows(List<GameObject> windows)
     {
@@ -34,5 +35,7 @@ internal static class OpenCloseWindow
         {
             Object.Destroy(windows[i]);
         }
-    }
+
+		UIApi.OpenedWindows.Clear();
+	}
 }

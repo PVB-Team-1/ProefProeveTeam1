@@ -1,34 +1,36 @@
 ﻿using UnityEngine;
 
+// The vertical movement of the camera depends on the zoom level of the camera, therefore the CameraZooming script is required.
+[RequireComponent(typeof(CameraZooming))]
+
 ///<summary>
 /// A class that is put on the camera, to control the vertical and horizontal movement of the object.
 /// Uses public float boundaries to show the outer bounds of the field where the object can move.
 ///</summary>
 public class CameraDragging : MonoBehaviour
 {
-    [SerializeField]
-    ///<summary>
-    /// The camera boundary on the left side.
-    ///</summary>
-    public float leftBoundary = -3f;
-    ///<summary>
-    /// The camera boundary on the right side.
-    ///</summary>
-    public float rightBoundary = 3f;
-    ///<summary>
-    /// The camera boundary on the upper side.
-    ///</summary>
-    public float upBoundary = 3f;
-    ///<summary>
-    /// The camera boundary on the lower side.
-    ///</summary>
-    public float downBoundary = -3f;
-
+    private CameraZooming _zooming;
     ///<summary>
     /// dragSpeed determines how fast the camera moves when dragging the screen.
     ///</summary>
     [SerializeField]
     private float _dragSpeed = 4;
+    ///<summary>
+    /// The camera boundrary on the horizontal axis.
+    ///</summary>
+    [SerializeField]
+    private float _horizontalBoundary = 3f;
+    ///<summary>
+    /// The camera boundary on the vertical axis.
+    ///</summary>
+    private float _verticalBoundary = 3f;
+    /// <summary>
+    /// Modifier to tweak the vertical boundary.
+    /// </summary>
+    [SerializeField]
+    private float _verticalBoundsModifier = 0.25f;
+
+    private float _zoomLevel;
 
     private bool _isDragging = false;
 
@@ -36,6 +38,12 @@ public class CameraDragging : MonoBehaviour
     private Vector3 _touchOrigin;
 
     private Touch touch;
+
+    private void Start()
+    {
+        _zooming = GetComponent<CameraZooming>();
+        _zooming.OnZooming += ClampToBounds;
+    }
 
     /*
         SavePositions saves the current position of the current object into the _oldPos private variable.
@@ -59,14 +67,17 @@ public class CameraDragging : MonoBehaviour
         float nextStepX = transform.position.x + -newPos.x * _dragSpeed;
         float nextStepY = transform.position.y + -newPos.y * _dragSpeed;
 
+        //Get zoom level for modifying boundaries.
+        _zoomLevel = _zooming.GetZoomLevel * _verticalBoundsModifier;
+
         //Check if the nextSteps are outside the boundaries
         if
         (
-            nextStepX < rightBoundary &&
-            nextStepX > leftBoundary
+            nextStepX < _horizontalBoundary &&
+            nextStepX > -_horizontalBoundary
         )
         {
-            //move the object horizontally
+            //Move the object horizontally.
             transform.position = new Vector3
             (
                 _oldPos.x + -newPos.x * _dragSpeed,
@@ -76,11 +87,11 @@ public class CameraDragging : MonoBehaviour
         }
         if
         (
-            nextStepY < upBoundary &&
-            nextStepY > downBoundary
+            nextStepY < _verticalBoundary * _zoomLevel &&
+            nextStepY > -_verticalBoundary * _zoomLevel
         )
         {
-            //move the object vertically
+            //Move the object vertically.
             transform.position = new Vector3
             (
                 transform.position.x,
@@ -89,9 +100,10 @@ public class CameraDragging : MonoBehaviour
             );
         }
     }
+
     private void Update()
     {
-        //only run when there is not more than 1 input.
+        //Only run when there is not more than 1 input.
         switch (Input.touchCount)
         {
             case 1:
@@ -112,11 +124,40 @@ public class CameraDragging : MonoBehaviour
                 _isDragging = false;
                 break;
             default:
-                //reset the _oldPos and _touchOrigin
+                //Reset the _oldPos and _touchOrigin.
                 _oldPos = transform.position;
                 _touchOrigin = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
                 _isDragging = false;
                 break;
         }
+    }
+
+    /*
+        Clamp the object to the vertical bounds.
+    */
+    private void ClampToBounds()
+    {
+        // Get the zoom level of the camera.
+        _zoomLevel = _zooming.GetZoomLevel * _verticalBoundsModifier;
+
+        // Clamp the object to vertical bounds.
+        if
+        (
+            transform.position.y > _zoomLevel * _verticalBoundary ||
+            transform.position.y < -_zoomLevel * _verticalBoundary
+        )
+        {
+            transform.position = new Vector3
+            (
+                transform.position.x,
+                Mathf.Clamp(transform.position.y, _zoomLevel * -_verticalBoundary, _zoomLevel * _verticalBoundary),
+                transform.position.z
+            );
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _zooming.OnZooming -= ClampToBounds;
     }
 }
