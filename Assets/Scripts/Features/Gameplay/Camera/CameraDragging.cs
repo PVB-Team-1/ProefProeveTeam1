@@ -66,14 +66,26 @@ public class CameraDragging : MonoBehaviour
     private void SaveOriginPositions()
     {
         _oldPos = transform.position;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        _touchOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+#elif UNITY_ANDROID
         _touchOrigin = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+#endif
+
     }
 
     // Moves the object according to the dragging the finger across the screen.
     private void MoveObject()
     {
         // Get the new position of the mouse relative to the _touchOrigin.
-        Vector3 newPos = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position) - _touchOrigin;
+        Vector3 newPos;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        newPos = Camera.main.ScreenToViewportPoint(Input.mousePosition) - _touchOrigin;
+#elif UNITY_ANDROID
+        newPos = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position) - _touchOrigin;
+#endif
 
         // Move the object.
         transform.position = new Vector3
@@ -90,7 +102,20 @@ public class CameraDragging : MonoBehaviour
     {
         if (_canDrag)
         {
-            // Only run when there is not more than 1 input.
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            if (Input.GetMouseButtonDown(0))
+                SaveOriginPositions();
+
+            if (Input.GetMouseButton(0))
+                MoveObject();
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                _oldPos = transform.position;
+                _touchOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            }
+#elif UNITY_ANDROID
             switch (Input.touchCount)
             {
                 case 1:
@@ -117,6 +142,7 @@ public class CameraDragging : MonoBehaviour
                     _isDragging = false;
                     break;
             }
+#endif
         }
     }
 
