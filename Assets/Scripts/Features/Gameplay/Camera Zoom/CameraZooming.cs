@@ -43,10 +43,30 @@ public class CameraZooming : MonoBehaviour
 
     private void Update()
     {
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        if (Input.mouseScrollDelta.y != 0)
+        {
+            transform.position += new Vector3
+            (
+                0,
+                0,
+                Input.mouseScrollDelta.y
+            );
+
+            ClampPosition();
+        }
+#endif
+
+#if UNITY_ANDROID
         if (Input.touchCount == 2)
         {
             // A temporary float to measure the distance between the 1st and 2nd touch on the screen.
-            float currentDistance = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
+            float currentDistance = Vector2.Distance
+            (
+                Input.GetTouch(0).position,
+                Input.GetTouch(1).position
+            );
 
             if (_previousDistance > 0)
             {
@@ -54,27 +74,42 @@ public class CameraZooming : MonoBehaviour
                 float delta = Mathf.Abs(currentDistance - _previousDistance);
 
                 if (currentDistance > _previousDistance)
-                {
-                    transform.position += new Vector3(0, 0, delta * _zoomSpeedModifier);
-
-                    if (transform.position.z > _maxZoomDistance)
-                        transform.position -= new Vector3(0, 0, Mathf.Abs(transform.position.z - _maxZoomDistance));
-                }
+                    transform.position += new Vector3
+                    (
+                        0,
+                        0,
+                        delta * _zoomSpeedModifier
+                    );
                 else if (currentDistance < _previousDistance)
-                {
-                    transform.position -= new Vector3(0, 0, delta * _zoomSpeedModifier);
-
-                    if (transform.position.z < _minZoomDistance)
-                        transform.position += new Vector3(0, 0, Mathf.Abs(transform.position.z - _minZoomDistance));
-                }
+                    transform.position -= new Vector3
+                    (
+                        0,
+                        0,
+                        delta * _zoomSpeedModifier
+                    );
             }
             _previousDistance = currentDistance;
 
             OnZooming?.Invoke();
 
+            ClampPosition();
+
             // As long as 2 touches are registered on the screen, _previousDistance won't reset it's value back to 0.
             return;
         }
         _previousDistance = 0f;
+#endif
+        
+    }
+        
+    // Clamp the camera's position between the minimum and maximum zoom distance.
+    private void ClampPosition()
+    {
+        transform.position = new Vector3
+        (
+            transform.position.x,
+            transform.position.y,
+            Mathf.Clamp(transform.position.z, _minZoomDistance, _maxZoomDistance)
+        );
     }
 }
