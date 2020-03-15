@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// A class with all methods about the pause window.
+/// <summary>
 public class PauseWindow : MonoBehaviour
 {
     /// <summary>
