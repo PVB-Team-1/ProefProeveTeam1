@@ -17,6 +17,8 @@ public class CameraDragging : MonoBehaviour
     private float _leftBoundary = 0f;
     private float _rightBoundary = 0f;
 
+    private float _startYPosition = 0f;
+
     private float _zoomLevel;
 
     private bool _isDragging = false;
@@ -50,8 +52,8 @@ public class CameraDragging : MonoBehaviour
         // Make boundaries relative to position.
         _leftBoundary = transform.position.x - _horizontalBoundary;
         _rightBoundary = transform.position.x + _horizontalBoundary;
-        _topBoundary += transform.position.y;
-        _bottomBoundary += transform.position.y;
+
+        _startYPosition = transform.position.y;
 
         _zooming = GetComponent<CameraZooming>();
         _zooming.OnZooming += ClampToBounds;
@@ -128,7 +130,7 @@ public class CameraDragging : MonoBehaviour
         transform.position = new Vector3
         (
             Mathf.Clamp(transform.position.x, _leftBoundary, _rightBoundary),
-            Mathf.Clamp(transform.position.y, _zoomLevel * _bottomBoundary, _zoomLevel * _topBoundary),
+            Mathf.Clamp(transform.position.y, _zoomLevel * _bottomBoundary + _startYPosition, _zoomLevel * _topBoundary + _startYPosition),
             transform.position.z
         );
     }
