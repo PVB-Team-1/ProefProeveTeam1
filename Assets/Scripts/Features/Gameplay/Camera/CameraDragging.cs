@@ -138,6 +138,13 @@ public class CameraDragging : MonoBehaviour
         _zooming.OnZooming -= ClampToBounds;
     }
 
-    private void EnableDragging(int i) { _canDrag = true; }
-    private void DisableDragging(int i) { _canDrag = false; }
+    private void EnableDragging(int i)
+    {
+        _canDrag = true;
+    }
+    
+    private void DisableDragging(int i)
+    {
+        _canDrag = false;
+    }
 }
