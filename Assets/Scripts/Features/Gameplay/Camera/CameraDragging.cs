@@ -5,17 +5,17 @@
 
 ///<summary>
 /// A class that is put on the camera, to control the vertical and horizontal movement of the object.
-/// Uses serialized private float boundaries to show the outer bounds of the field where the object can move.
+/// Uses float boundaries to show the outer bounds of the field where the object can move.
 ///</summary>
 public class CameraDragging : MonoBehaviour
 {
 
     private CameraZooming _zooming;
 
-    ///<summary>
-    /// The camera boundary on the vertical axis.
-    ///</summary>
-    private float _verticalBoundary = 3f;
+    private float _topBoundary = 3f;
+    private float _bottomBoundary = -3f;
+    private float _leftBoundary = 0f;
+    private float _rightBoundary = 0f;
 
     private float _zoomLevel;
 
@@ -48,8 +48,10 @@ public class CameraDragging : MonoBehaviour
     private void Start()
     {
         // Make boundaries relative to position.
-        _horizontalBoundary += transform.position.x;
-        _verticalBoundary += transform.position.y;
+        _leftBoundary = transform.position.x - _horizontalBoundary;
+        _rightBoundary = transform.position.x + _horizontalBoundary;
+        _topBoundary += transform.position.y;
+        _bottomBoundary += transform.position.y;
 
         _zooming = GetComponent<CameraZooming>();
         _zooming.OnZooming += ClampToBounds;
@@ -71,42 +73,15 @@ public class CameraDragging : MonoBehaviour
         // Get the new position of the mouse relative to the _touchOrigin.
         Vector3 newPos = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position) - _touchOrigin;
 
-        // Calculate the position of the next step, for checking if the next position is over a boundary.
-        float nextStepX = transform.position.x + -newPos.x * _dragSpeed;
-        float nextStepY = transform.position.y + -newPos.y * _dragSpeed;
-
-        // Get zoom level for modifying boundaries.
-        _zoomLevel = _zooming.GetZoomLevel * _verticalBoundsModifier;
-
-        // Check if the nextSteps are outside the boundaries.
-        if
+        // Move the object.
+        transform.position = new Vector3
         (
-            nextStepX < _horizontalBoundary &&
-            nextStepX > -_horizontalBoundary
-        )
-        {
-            // Move the object horizontally.
-            transform.position = new Vector3
-            (
-                _oldPos.x + -newPos.x * _dragSpeed,
-                transform.position.y,
-                transform.position.z
-            );
-        }
-        if
-        (
-            nextStepY < _verticalBoundary * _zoomLevel &&
-            nextStepY > -_verticalBoundary * _zoomLevel
-        )
-        {
-            // Move the object vertically.
-            transform.position = new Vector3
-            (
-                transform.position.x,
-                _oldPos.y + -newPos.y * _dragSpeed,
-                transform.position.z
-            );
-        }
+            _oldPos.x + -newPos.x * _dragSpeed,
+            _oldPos.y + -newPos.y * _dragSpeed,
+            transform.position.z
+        );
+
+        ClampToBounds();
     }
 
     private void Update()
@@ -150,19 +125,12 @@ public class CameraDragging : MonoBehaviour
         _zoomLevel = _zooming.GetZoomLevel * _verticalBoundsModifier;
 
         // Clamp the object to vertical bounds.
-        if
+        transform.position = new Vector3
         (
-            transform.position.y > _zoomLevel * _verticalBoundary ||
-            transform.position.y < -_zoomLevel * _verticalBoundary
-        )
-        {
-            transform.position = new Vector3
-            (
-                transform.position.x,
-                Mathf.Clamp(transform.position.y, _zoomLevel * -_verticalBoundary, _zoomLevel * _verticalBoundary),
-                transform.position.z
-            );
-        }
+            Mathf.Clamp(transform.position.x, _leftBoundary, _rightBoundary),
+            Mathf.Clamp(transform.position.y, _zoomLevel * _bottomBoundary, _zoomLevel * _topBoundary),
+            transform.position.z
+        );
     }
 
     private void OnDestroy()

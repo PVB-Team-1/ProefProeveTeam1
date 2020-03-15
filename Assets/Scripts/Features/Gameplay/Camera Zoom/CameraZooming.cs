@@ -13,10 +13,7 @@ public class CameraZooming : MonoBehaviour
     {
         get
         {
-            // Get the delta of the minimum- and maximum zoom distance.
-            float delta = Mathf.Abs(_maxZoomDistance - _minZoomDistance);
-            // Return the delta of the zoom delta and the current position of the camera.
-            return Mathf.Abs(delta - transform.position.z);
+            return Mathf.Abs(_minZoomDistance - transform.position.z);
         }
     }
 
@@ -53,6 +50,8 @@ public class CameraZooming : MonoBehaviour
                 0,
                 Input.mouseScrollDelta.y
             );
+
+            OnZooming?.Invoke();
 
             ClampPosition();
         }
