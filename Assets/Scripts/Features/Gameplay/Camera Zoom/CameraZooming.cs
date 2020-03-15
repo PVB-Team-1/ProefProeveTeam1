@@ -7,29 +7,38 @@ public class CameraZooming : MonoBehaviour
 {
 
     /// <summary>
-    /// A simple event to call when the camera is zooming in or out.
-    /// </summary>
-    public SimpleEvent OnZooming;
-
-    // Distance between 2 touches in the previous saved frame.
-    private float _previousDistance = 0f;
-
-    // Multiplier to tweak camera zoom speed.
-    [SerializeField] private float _zoomSpeedModifier = 0.5f;
-
-    [SerializeField] private float _minZoomDistance = 0.0f;
-
-    [SerializeField] private float _maxZoomDistance = 5.0f;
-
-    /// <summary>
     /// Returns the zoom level of the camera.
     /// </summary>
     public float GetZoomLevel
     {
         get
         {
-            return Mathf.Abs(transform.position.z - _minZoomDistance);
+            // Get the delta of the minimum- and maximum zoom distance.
+            float delta = Mathf.Abs(_maxZoomDistance - _minZoomDistance);
+            // Return the delta of the zoom delta and the current position of the camera.
+            return Mathf.Abs(delta - transform.position.z);
         }
+    }
+
+    // Distance between 2 touches in the previous saved frame.
+    private float _previousDistance = 0f;
+
+    // Multiplier to tweak camera zoom speed.
+    [SerializeField] private float _zoomSpeedModifier = 0.005f;
+
+    [SerializeField] private float _minZoomDistance = 0.0f;
+    [SerializeField] private float _maxZoomDistance = 5.0f;
+
+    /// <summary>
+    /// A simple event to call when the camera is zooming in or out.
+    /// </summary>
+    public SimpleEvent OnZooming;
+
+    private void Start()
+    {
+        // Adding the camera's Z position to the minumum- and maximum zoom distance to make them relative to the camera's starting position.
+        _minZoomDistance += transform.position.z;
+        _maxZoomDistance += transform.position.z;
     }
 
     private void Update()
