@@ -101,10 +101,8 @@ public class CameraZooming : MonoBehaviour
 #endif
         
     }
-
-    /*
-        Clamp the camera's position between the minimum and maximum zoom distance.
-    */
+        
+    // Clamp the camera's position between the minimum and maximum zoom distance.
     private void ClampPosition()
     {
         transform.position = new Vector3
