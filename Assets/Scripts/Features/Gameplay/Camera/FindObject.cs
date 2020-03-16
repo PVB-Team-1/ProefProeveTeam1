@@ -6,9 +6,6 @@
 /// </summary>
 public class FindObject : MonoBehaviour
 {
-    // _findableObjects is a array with all gameobject that are able to be collected.
-    [SerializeField] private GameObject[] _findableObjects;
-
     private void Awake()
     {
         PhotoCameraApi.OnCreatePhoto += ()=>
@@ -28,7 +25,7 @@ public class FindObject : MonoBehaviour
     /// <returns> If a findable gameobject is found within the camera view, return the closest gameobject. Else return null. </returns>
     private GameObject CheckObject()
     {
-        GameObject[] findableObjects = _findableObjects;
+        GameObject[] findableObjects = Properties.currentFindableItems;
 
         float closestDistance = 999;
         GameObject closestObject = null;
