@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// An Api class for everything about the Photo Camera.
 /// </summary>
 public static class PhotoCameraApi
@@ -17,6 +19,11 @@ public static class PhotoCameraApi
 	/// An event for when a photo finished showing.
 	/// </summary>
 	public static event SimpleEvent OnShowPhotoFinished;
+
+	/// <summary>
+	/// An event for when an object has been found.
+	/// </summary>
+	public static event GameObjectEvent OnFoundObject;
 
 	/// <summary>
 	/// CreatePhoto calls the OnCreatePhoto event.
@@ -40,5 +47,13 @@ public static class PhotoCameraApi
 	public static void ShowPhotoFinished()
 	{
 		OnShowPhotoFinished?.Invoke();
+	}
+
+	/// <summary>
+	/// FoundObject calls the OnFoundObject event.
+	/// </summary>
+	public static void FoundObject(GameObject foundObject)
+	{
+		OnFoundObject?.Invoke(foundObject);
 	}
 }
