@@ -18,8 +18,7 @@ public class FindObject : MonoBehaviour
             if (!foundObject)
                 return;
 
-            // Uncomment the next line when the FoundObject function is created in the backend
-            //PhotoCameraApi.FoundObject(foundObject);
+            PhotoCameraApi.FoundObject(foundObject);
         };
     }
 
