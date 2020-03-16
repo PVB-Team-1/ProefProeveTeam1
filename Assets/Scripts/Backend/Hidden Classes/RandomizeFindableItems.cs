@@ -10,7 +10,7 @@ internal static class RandomizeFindableItems
 
 	private static void OnRandomizeFindableItems(int level)
 	{
-		// In an array you need to get index 0 for level 1
+		// In an array you need to get index 0 for level 1.
 		level--;
 
 		GameObject[] itemSpawners = GameObject.FindGameObjectsWithTag("Item Spawner");
@@ -30,19 +30,19 @@ internal static class RandomizeFindableItems
 			itemSpawnNumber = itemSpawners.Length;
 		}
 
-		// Shuffle all items
+		// Shuffle all items.
 		itemPrefabs = Shuffle(itemPrefabs);
 
-		// Resize items array to itemSpawnNumber
+		// Resize items array to itemSpawnNumber.
 		Array.Resize(ref itemPrefabs, itemSpawnNumber);
 
-		// Instantiate all items
+		// Instantiate all items.
 		itemInstances = new GameObject[itemSpawnNumber];
 
 		for (int i = 0; i < itemSpawnNumber; i++)
 			itemInstances[0] = UnityEngine.Object.Instantiate(itemPrefabs[i], itemSpawners[i].transform.position, Quaternion.identity, itemSpawners[i].transform);
 
-		// Add the instances of the items to the Properties class
+		// Add the instances of the items to the Properties class.
 		Properties.currentFindableItems = itemInstances;
 	}
 
