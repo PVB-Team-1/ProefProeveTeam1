@@ -96,6 +96,9 @@ public class CameraDragging : MonoBehaviour
         );
 
         ClampToBounds();
+        
+        // Save the updated position as new origin position.
+        SaveOriginPositions();
     }
 
     private void Update()
