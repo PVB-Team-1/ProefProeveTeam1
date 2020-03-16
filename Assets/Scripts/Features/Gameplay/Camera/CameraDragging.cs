@@ -177,5 +177,6 @@ public class CameraDragging : MonoBehaviour
     private void DisableDragging(int i)
     {
         _canDrag = false;
+        _isDragging = false;
     }
 }
