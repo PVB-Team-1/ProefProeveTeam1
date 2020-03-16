@@ -40,7 +40,7 @@ internal static class RandomizeFindableItems
 		itemInstances = new GameObject[itemSpawnNumber];
 
 		for (int i = 0; i < itemSpawnNumber; i++)
-			itemInstances[0] = UnityEngine.Object.Instantiate(itemPrefabs[i], itemSpawners[i].transform.position, Quaternion.identity, itemSpawners[i].transform);
+			itemInstances[i] = UnityEngine.Object.Instantiate(itemPrefabs[i], itemSpawners[i].transform.position, Quaternion.identity, itemSpawners[i].transform);
 
 		// Add the instances of the items to the Properties class.
 		Properties.currentFindableItems = itemInstances;
