@@ -13,11 +13,18 @@ public class ObjectsToFindBar : MonoBehaviour
     private void Start()
     {
         LevelApi.OnLevelStart += SpawnFindableObjectUI;
+        LevelApi.StartLevel(1);
     }
 
-    private void SpawnFindableObjectUI(int i)
+    private void SpawnFindableObjectUI(int level)
     {
-        GameObject spawnedUI = Instantiate(new GameObject("UI_Image - Item_Icon"), _ItemContainer.transform.position, Quaternion.identity);
-        spawnedUI.AddComponent<Image>().sprite = ;
+        int length = Properties.levelData[level - 1].itemIcons.Length;
+
+        for (int i = 0; i < length; i++)
+        {
+            Image spawnedUI = Instantiate(new GameObject("UI_Image - Item_Icon"), _ItemContainer.transform.position, Quaternion.identity, _ItemContainer.transform).AddComponent<Image>();
+            spawnedUI.sprite = Properties.levelData[level - 1].itemIcons[i];
+            spawnedUI.preserveAspect = true;
+        }
     }
 }
