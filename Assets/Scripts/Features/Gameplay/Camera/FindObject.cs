@@ -52,7 +52,7 @@ public class FindObject : MonoBehaviour
             {
                 Vector3 vertPos = closestObject.transform.position + transform.TransformPoint(meshVerts[j]);
 
-                if (Vector3.Dot(vertPos, planes[i].normal) + planes[i].distance >= 0)
+                if (Vector3.Dot(vertPos, planes[i].normal) + planes[i].distance <= 0)
                 {
                     // Object is not completely inside plane.
                     return null;
