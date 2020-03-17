@@ -23,5 +23,5 @@ public static class Properties
 	/// <summary>
 	/// All items that you can find in the current level.
 	/// </summary>
-	public static GameObject[] currentFindableItems;
+	public static FindableItem[] currentFindableItems;
 }
