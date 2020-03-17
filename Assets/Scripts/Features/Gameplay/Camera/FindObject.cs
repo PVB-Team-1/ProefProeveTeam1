@@ -25,19 +25,18 @@ public class FindObject : MonoBehaviour
     /// <returns> If a findable gameobject is found within the camera view, return the closest gameobject. Else return null. </returns>
     private GameObject CheckObject()
     {
-        GameObject[] findableObjects = Properties.currentFindableItems;
-
+        int findableObjectsLength = Properties.currentFindableItems.Length;
         float closestDistance = 999;
         GameObject closestObject = null;
 
-        for (int i = 0; i < findableObjects.Length; i++)
+        for (int i = 0; i < findableObjectsLength; i++)
         {
-            float distance = Vector2.Distance(Camera.main.transform.position, findableObjects[i].transform.position);
+            float distance = Vector2.Distance(Camera.main.transform.position, Properties.currentFindableItems[i].transform.position);
 
-            if(distance < closestDistance)
+            if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestObject = findableObjects[i];
+                closestObject = Properties.currentFindableItems[i];
             }
         }
 
@@ -45,10 +44,10 @@ public class FindObject : MonoBehaviour
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         Vector3[] meshVerts = closestObject.GetComponent<MeshFilter>().mesh.vertices;
 
-        for(int i=0; i<4; i++)
+        for (int i = 0; i < 4; i++)
         {
-            // If the vertex * normal of plane + distance of plane >= 0, the Vertex is not inside the plane.
-            for(int j = 0; j < meshVerts.Length; j++)
+            // If the vertex * normal of plane + distance of plane <= 0, the Vertex is not inside the plane.
+            for (int j = 0; j < meshVerts.Length; j++)
             {
                 Vector3 vertPos = closestObject.transform.position + transform.TransformPoint(meshVerts[j]);
 
