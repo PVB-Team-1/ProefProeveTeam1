@@ -1,31 +1,67 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
-/// A script to generate a photograph.
+/// A script to generate and show a photograph.
 /// </summary>
 public class GeneratePhoto : MonoBehaviour
 {
 
-    [SerializeField] private GameObject _picture;
+    [Tooltip("How long the photo stays on screen before it disappears again.")]
+    [Range(0.5f, 3f)]
+    [SerializeField]
+    private float _photoScreenTime = 1.5f;
 
-    [SerializeField] private RenderTexture _renderTexture;
+    [Tooltip("The RenderTexture that will hold the camera's rendering data.")]
+    [SerializeField]
+    private RenderTexture _renderTexture;
+
+    private Image _backdrop = null;
+    private RawImage _foregroundImage = null;
 
     private void Start()
     {
-        PhotoCameraApi.OnCreatePhoto += GenerateNewPhoto;
+        // Subscribe to PhotoCameraApi's events.
+        PhotoCameraApi.OnCreatePhoto += CreatePhoto;
+        PhotoCameraApi.OnShowPhoto += ShowPhoto;
+
+        // Get the foreground and backdrop images.
+        _foregroundImage = GetComponentInChildren<RawImage>();
+        _backdrop = GetComponent<Image>();
     }
 
-    private void GenerateNewPhoto()
+    private void CreatePhoto()
     {
-        Renderer rend = _picture.GetComponent<Renderer>();
+        _foregroundImage.texture = ToTexture2D(_renderTexture);
 
-        rend.material.mainTexture = ToTexture2D(_renderTexture);
+        PhotoCameraApi.ShowPhoto();
+    }
+
+    private void ShowPhoto()
+    {
+        _foregroundImage.enabled = true;
+        _backdrop.enabled = true;
+
+        StartCoroutine(HidePhotoRoutine());
+    }
+
+    private IEnumerator HidePhotoRoutine()
+    {
+        yield return new WaitForSeconds(_photoScreenTime);
+
+        // Disable the foreground and backdrop images to reduce draw calls.
+        _foregroundImage.enabled = false;
+        _backdrop.enabled = false;
+
+        PhotoCameraApi.ShowPhotoFinished();
     }
 
     private void OnDestroy()
     {
-        // Remove the reference so that OnCreatePhoto won't call the function on a destroyed instance of this script.
-        PhotoCameraApi.OnCreatePhoto -= GenerateNewPhoto;
+        // Remove the subscriptions to PhotoCameraApi's events.
+        PhotoCameraApi.OnCreatePhoto -= CreatePhoto;
+        PhotoCameraApi.OnShowPhoto += ShowPhoto;
     }
 
     private Texture2D ToTexture2D(RenderTexture renderTexture)
