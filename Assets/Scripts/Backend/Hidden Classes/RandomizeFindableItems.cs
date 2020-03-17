@@ -14,8 +14,8 @@ internal static class RandomizeFindableItems
 		level--;
 
 		GameObject[] itemSpawners = GameObject.FindGameObjectsWithTag("Item Spawner");
-		GameObject[] itemPrefabs = Properties.levelData[level].items;
-		GameObject[] itemInstances;
+		FindableItem[] itemPrefabs = Properties.levelData[level].items;
+		FindableItem[] itemInstances;
 		int itemSpawnNumber = Properties.levelData[level].itemSpawnNumber;
 
 		// If there are more items that need to be spawned than item spawners.
@@ -37,10 +37,14 @@ internal static class RandomizeFindableItems
 		Array.Resize(ref itemPrefabs, itemSpawnNumber);
 
 		// Instantiate all items.
-		itemInstances = new GameObject[itemSpawnNumber];
+		itemInstances = new FindableItem[itemSpawnNumber];
 
 		for (int i = 0; i < itemSpawnNumber; i++)
-			itemInstances[i] = UnityEngine.Object.Instantiate(itemPrefabs[i], itemSpawners[i].transform.position, Quaternion.identity, itemSpawners[i].transform);
+			itemInstances[i] = new FindableItem
+			{
+				model = UnityEngine.Object.Instantiate(itemPrefabs[i].model, itemSpawners[i].transform.position, Quaternion.identity, itemSpawners[i].transform),
+				icon = itemPrefabs[i].icon
+			};
 
 		// Add the instances of the items to the Properties class.
 		Properties.currentFindableItems = itemInstances;

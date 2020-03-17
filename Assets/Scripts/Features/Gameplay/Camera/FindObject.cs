@@ -32,12 +32,12 @@ public class FindObject : MonoBehaviour
 
         for (int i = 0; i < findableObjectsLength; i++)
         {
-            float distance = Vector2.Distance(Camera.main.transform.position, Properties.currentFindableItems[i].transform.position);
+            float distance = Vector2.Distance(Camera.main.transform.position, Properties.currentFindableItems[i].model.transform.position);
 
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestObject = Properties.currentFindableItems[i];
+                closestObject = Properties.currentFindableItems[i].model;
             }
         }
 
