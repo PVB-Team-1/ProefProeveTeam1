@@ -58,10 +58,8 @@ public class CreatePhotoDoubleTap : MonoBehaviour
 #endif
 
     }
-
-    /*
-        Resets click count to 0 after the maximum time to doubleclick has passed.
-    */
+    
+    // Resets click count to 0 after the maximum time to doubleclick has passed.
     private IEnumerator DoubleClickTimer()
     {
         yield return new WaitForSeconds(_maxClickTime);
