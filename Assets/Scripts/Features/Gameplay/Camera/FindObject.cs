@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// FindObject adds the CheckObject function to the OnCreatePhoto delegate.
@@ -15,7 +16,7 @@ public class FindObject : MonoBehaviour
             if (!foundObject)
                 return;
 
-            PhotoCameraApi.FoundObject(foundObject);
+            PhotoCameraApi.FoundObject(Array.IndexOf(Properties.currentFindableItems, foundObject));
         };
     }
 
