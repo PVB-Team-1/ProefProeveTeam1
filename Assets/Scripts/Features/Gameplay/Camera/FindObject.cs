@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// FindObject adds the CheckObject function to the OnCreatePhoto delegate.
@@ -15,7 +16,7 @@ public class FindObject : MonoBehaviour
             if (!foundObject)
                 return;
 
-            PhotoCameraApi.FoundObject(foundObject);
+            PhotoCameraApi.FoundObject(Array.IndexOf(Properties.currentFindableItems, foundObject));
         };
     }
 
@@ -31,12 +32,12 @@ public class FindObject : MonoBehaviour
 
         for (int i = 0; i < findableObjectsLength; i++)
         {
-            float distance = Vector2.Distance(Camera.main.transform.position, Properties.currentFindableItems[i].transform.position);
+            float distance = Vector2.Distance(Camera.main.transform.position, Properties.currentFindableItems[i].model.transform.position);
 
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestObject = Properties.currentFindableItems[i];
+                closestObject = Properties.currentFindableItems[i].model;
             }
         }
 

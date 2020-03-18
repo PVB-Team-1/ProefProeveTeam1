@@ -28,11 +28,5 @@ public class LevelData
 	/// All items that fit the level theme.
 	/// </summary>
 	[Tooltip("All items that fit the level theme.")]
-	public GameObject[] items;
-
-	/// <summary>
-	/// All icons that correspond with an item.
-	/// </summary>
-	[Tooltip("All icons that correspond with an item.")]
-	public Sprite[] itemIcons;
+	public FindableItem[] items;
 }
