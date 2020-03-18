@@ -43,7 +43,10 @@ public class ObjectsToFindBar : MonoBehaviour
 		if (image.color.r < 1 && image.color.g < 1 && image.color.b < 1)
 			image.color += Color.Lerp(from, to, _fadeSpeed * Time.deltaTime);
 		else
+		{
 			_foundObjects.RemoveAt(0);
+			_foundObjectTemp = null;
+		}
     }
 
     private void ObjectFound(int foundObject)
@@ -53,6 +56,9 @@ public class ObjectsToFindBar : MonoBehaviour
 
 	private void ShowPhotoFinished()
 	{
+		if (!_foundObjectTemp)
+			return;
+
 		_foundObjects.Add(_foundObjectTemp);
 	}
 
