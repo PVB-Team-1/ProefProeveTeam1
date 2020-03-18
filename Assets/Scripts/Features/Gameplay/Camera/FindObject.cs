@@ -16,7 +16,15 @@ public class FindObject : MonoBehaviour
             if (!foundObject)
                 return;
 
-            PhotoCameraApi.FoundObject(Array.IndexOf(Properties.currentFindableItems, foundObject));
+			for (int i = 0; i < Properties.currentFindableItems.Length; i++)
+			{
+				if (Properties.currentFindableItems[i].model == foundObject)
+				{
+					PhotoCameraApi.FoundObject(i);
+					break;
+				}
+
+			}
         };
     }
 
@@ -41,6 +49,16 @@ public class FindObject : MonoBehaviour
             }
         }
 
+		if (
+			Camera.main.transform.position.x < closestObject.transform.position.x - 0.3 &&
+			Camera.main.transform.position.x > closestObject.transform.position.x + 0.3
+		)
+			return null;
+
+		if (closestDistance >= 2)
+			return null;
+
+		/*
         // Calculate if the closest object is completely inside the camera's view.
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         Vector3[] meshVerts = closestObject.GetComponent<MeshFilter>().mesh.vertices;
@@ -59,6 +77,7 @@ public class FindObject : MonoBehaviour
                 }
             }
         }
+		*/
 
         // Object is completely inside all planes.
         return closestObject;

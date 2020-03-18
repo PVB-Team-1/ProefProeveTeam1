@@ -10,4 +10,9 @@ public class InitializeStaticConstructors : MonoBehaviour
 	{
 		RuntimeHelpers.RunClassConstructor(typeof(RandomizeFindableItems).TypeHandle);
 	}
+
+	void Start()
+	{
+		LevelApi.StartLevel(1);
+	}
 }
