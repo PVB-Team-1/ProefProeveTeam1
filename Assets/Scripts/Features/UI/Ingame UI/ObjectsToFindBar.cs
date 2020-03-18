@@ -45,15 +45,23 @@ public class ObjectsToFindBar : MonoBehaviour
 
     private void SpawnFindableObjectUI(int level)
     {
-        int length = Properties.levelData[level - 1].itemIcons.Length;
-        _spawnedImages = new Image[length];
+		int length = Properties.currentFindableItems.Length;
+		_spawnedImages = new Image[length];
 
         for (int i = 0; i < length; i++)
         {
+			// Null icon check
+			if (!Properties.currentFindableItems[i].icon)
+			{
+				Debug.LogWarning("The icon from item " + i + " is null.");
+				continue;
+			}
+
             Image spawnedUI = Instantiate(new GameObject("UI_Image - Item_Icon"), _itemContainer.transform.position, Quaternion.identity, _itemContainer.transform).AddComponent<Image>();
-            spawnedUI.sprite = Properties.levelData[level - 1].itemIcons[i];
+            spawnedUI.sprite = Properties.currentFindableItems[i].icon;
             spawnedUI.color = Color.black;
             spawnedUI.preserveAspect = true;
+			spawnedUI.useSpriteMesh = true;
 
             _spawnedImages[i] = spawnedUI;
         }
