@@ -20,14 +20,10 @@ public class ObjectsToFindBar : MonoBehaviour
     {
         _itemContainer = FindObjectOfType<HorizontalLayoutGroup>().gameObject;
 
-        PhotoCameraApi.OnFoundObject += ObjectFound;
+		PhotoCameraApi.OnFoundObject += ObjectFound;
 		PhotoCameraApi.OnShowPhotoFinished += ShowPhotoFinished;
-    }
-
-    private void Start()
-    {
-        LevelApi.OnLevelStart += SpawnFindableObjectUI;
-    }
+		LevelApi.OnLevelStart += SpawnFindableObjectUI;
+	}
 
     private void Update()
     {
