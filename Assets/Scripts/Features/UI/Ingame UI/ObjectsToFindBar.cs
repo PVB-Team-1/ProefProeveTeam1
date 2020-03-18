@@ -1,47 +1,60 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// A UI bar for objects that you need to find and have been found.
+/// </summary>
 public class ObjectsToFindBar : MonoBehaviour
 {
     private GameObject _itemContainer = null;
 
-    private Image _foundObject = null;
+    private List<Image> _foundObjects = new List<Image>();
+	private Image _foundObjectTemp = null;
     private Image[] _spawnedImages = null;
 
-    private bool _lerpColor = false;
+	[Tooltip("How fast the icons of the items fade in/out.")]
+	[SerializeField] private float _fadeSpeed = 0.2f;
 
-    private void Awake()
+	private void Awake()
     {
         _itemContainer = FindObjectOfType<HorizontalLayoutGroup>().gameObject;
 
         PhotoCameraApi.OnFoundObject += ObjectFound;
+		PhotoCameraApi.OnShowPhotoFinished += ShowPhotoFinished;
     }
 
     private void Start()
     {
         LevelApi.OnLevelStart += SpawnFindableObjectUI;
-        LevelApi.StartLevel(1);
     }
 
     private void Update()
     {
-        if(_lerpColor)
-            LerpImageColor(_foundObject, Color.black, Color.white, 3);
+		if (_foundObjects.Count > 0)
+		{
+			for (int i = 0; i < _foundObjects.Count; i++)
+				LerpImageColor(_foundObjects[i], Color.black, Color.white, _fadeSpeed);
+		}
     }
 
-    private void LerpImageColor(Image image, Color from, Color to, float duration)
+    private void LerpImageColor(Image image, Color from, Color to, float _fadeSpeed)
     {
-        if (image.color != Color.white)
-            image.color = Color.Lerp(from, to, duration * Time.deltaTime);
-        else
-            _lerpColor = false;
+		if (image.color.r < 1 && image.color.g < 1 && image.color.b < 1)
+			image.color += Color.Lerp(from, to, _fadeSpeed * Time.deltaTime);
+		else
+			_foundObjects.RemoveAt(0);
     }
 
     private void ObjectFound(int foundObject)
     {
-        _foundObject = _spawnedImages[foundObject];
-        _lerpColor = true;
+		_foundObjectTemp = _spawnedImages[foundObject];
     }
+
+	private void ShowPhotoFinished()
+	{
+		_foundObjects.Add(_foundObjectTemp);
+	}
 
     private void SpawnFindableObjectUI(int level)
     {
