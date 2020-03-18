@@ -23,7 +23,7 @@ public static class PhotoCameraApi
 	/// <summary>
 	/// An event for when an object has been found.
 	/// </summary>
-	public static event GameObjectEvent OnFoundObject;
+	public static event IntEvent OnFoundObject;
 
 	/// <summary>
 	/// CreatePhoto calls the OnCreatePhoto event.
@@ -52,7 +52,7 @@ public static class PhotoCameraApi
 	/// <summary>
 	/// FoundObject calls the OnFoundObject event.
 	/// </summary>
-	public static void FoundObject(GameObject foundObject)
+	public static void FoundObject(int foundObject)
 	{
 		OnFoundObject?.Invoke(foundObject);
 	}
